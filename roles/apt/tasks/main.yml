@@ -1,12 +1,12 @@
 ---
 - name: upgrade packages
-  apt:
+  package:
     update_cache: yes
     upgrade: full
   become: true
 
 - name: install pass
-  apt:
+  package:
     name: pass
     state: present
   become: true

@@ -2,7 +2,7 @@
 set -e
 
 # Paths
-DOTFILES_DIR="$HOME/ansible-config-ubuntu"
+DOTFILES_DIR="$HOME/.dotfiles"
 if ! [ -x "$(command -v ansible)" ]; then
   sudo pip install ansible
 fi

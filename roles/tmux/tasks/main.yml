@@ -1,6 +1,6 @@
 ---
 - name: get libevent and ncurses
-  apt:
+  package:
     name:
       - libevent-dev
       - libncurses-dev

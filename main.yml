@@ -10,3 +10,4 @@
     - rust
     - cargo
     - tmux
+    - { role: fubarhouse.golang, become: true }

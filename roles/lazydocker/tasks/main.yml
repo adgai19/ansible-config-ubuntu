@@ -1,0 +1,7 @@
+---
+- name: check if lazydocker is installed
+  shell: command -v lazydocker
+  register: lazydocker_exists
+  ignore_errors: true
+
+- name: "install lazydocker"
