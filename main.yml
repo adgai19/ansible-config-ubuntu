@@ -1,6 +1,12 @@
 ---
 - hosts: localhost
   connection: local
-  become: true
+  vars_files:
+    - ./vars/localhost.yml
   roles:
     - nvim-build
+    - nvim-config
+    - apt
+    - rust
+    - cargo
+    - tmux

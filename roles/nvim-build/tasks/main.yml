@@ -1,0 +1,45 @@
+---
+- name: Dependancies
+  become: true
+  apt:
+    name:
+      - ninja-build
+      - gettext
+      - libtool
+      - libtool-bin
+      - autoconf
+      - automake
+      - cmake
+      - g++
+      - pkg-config
+      - unzip
+      - curl
+      - doxygen
+    state: present
+
+- name: Clone neovim
+  ansible.builtin.git:
+    clone: yes
+    depth: 1
+    dest: "~/github/neovim"
+    force: yes
+    repo: https://github.com/neovim/neovim.git
+    single_branch: yes
+    update: yes
+    version: "{{ neovim_version | default('master') }}"
+  register: clone
+
+- name: Build Neovim
+  community.general.make:
+    chdir: "{{ ansible_user_dir }}/github/neovim"
+    jobs: 8
+    params:
+      CMAKE_BUILD_TYPE: RelWithDebInfo
+  when: clone.changed
+
+- name: Install Neovim
+  make:
+    target: install
+    chdir: "{{ ansible_user_dir }}/github/neovim"
+  become: true
+  when: clone.changed

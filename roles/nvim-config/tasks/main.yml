@@ -1,0 +1,8 @@
+---
+- name: Clone Config
+  ansible.builtin.git:
+    clone: yes
+    dest: "~/.config/nvim"
+    repo: "git@github.com:adgai19/nvim-config.git"
+    update: yes
+    single_branch: yes

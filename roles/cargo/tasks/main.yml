@@ -1,0 +1,15 @@
+---
+- name: install packages
+  community.general.cargo:
+    name:
+      - alacritty
+      - bat
+      - bottom
+      - cargo-update
+      - distant
+      - exa
+      - gitui
+      - sd
+      - starship
+      - stylua
+    state: latest

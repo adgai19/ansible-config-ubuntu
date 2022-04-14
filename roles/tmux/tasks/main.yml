@@ -1,0 +1,56 @@
+---
+- name: get libevent and ncurses
+  apt:
+    name:
+      - libevent-dev
+      - libncurses-dev
+      - pkg-config
+      - bison
+      - build-essential
+
+- name: clone tmux
+  git:
+    clone: yes
+    dest: "~/github/tmux"
+    repo: https://github.com/tmux/tmux.git
+    update: yes
+    single_branch: yes
+  register: clone
+
+- name: configure tmux
+  shell:
+    cmd: "sh autogen.sh && ./configure"
+    chdir: "{{ ansible_user_dir}}/github/tmux"
+  when: clone.changed
+
+- name: build tmux
+  make:
+    chdir: "{{ ansible_user_dir}}/github/tmux"
+    jobs: 8
+  when: clone.changed
+
+- name: install tmux
+  make:
+    target: install
+    chdir: "{{ ansible_user_dir}}/github/tmux"
+  become: true
+  when: clone.changed
+
+- name: get tmux config
+  get_url:
+    url: https://raw.githubusercontent.com/adgai19/system-config/master/.tmux.conf
+    dest: "{{ ansible_user_dir}}/.tmux.conf"
+
+- name: get tpm
+  git:
+    clone: yes
+    repo: https://github.com/tmux-plugins/tpm
+    dest: ~/.tmux/plugins/tpm
+    update: yes
+    single_branch: yes
+  when: clone.changed
+
+- name: install tmux plugins
+  shell:
+    cmd: ~/.tmux/plugins/tpm/bin/install_plugins
+  when: clone.changed
