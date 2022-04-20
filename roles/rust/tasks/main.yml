@@ -19,3 +19,8 @@
   shell: /tmp/sh.rustup.rs -y
   tags:
     - rust
+# - name: add cargo to path in fish
+#   when: cargo_exists is failed
+#   lineinfile:
+#     path: "{{ansible_user_dir}}/.config/fish/config.fish"
+#     line:

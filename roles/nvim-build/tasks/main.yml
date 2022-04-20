@@ -17,16 +17,27 @@
       - doxygen
     state: present
 
+- name: check if nvim build dir is present
+  stat:
+    path: "{{ ansible_user_dir }}/github/neovim"
+  register: build
+
+- name: get latest tags
+  command:
+    chdir: "{{ ansible_user_dir }}/github/neovim"
+    cmd: git fetch --tags -f
+  when: build.stat.exists
+
 - name: Clone neovim
   ansible.builtin.git:
     clone: yes
     depth: 1
-    dest: "~/github/neovim"
+    dest: "{{ ansible_user_dir }}/github/neovim"
     force: yes
     repo: https://github.com/neovim/neovim.git
     single_branch: yes
     update: yes
-    version: "{{ neovim_version | default('master') }}"
+    # version: "{{ neovim_version | default('master') }}"
   register: clone
 
 - name: Build Neovim

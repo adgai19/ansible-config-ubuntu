@@ -2,3 +2,4 @@ collections:
   - name: community.general
 roles:
   - name: fubarhouse.golang
+  - name: fubarhouse.rust

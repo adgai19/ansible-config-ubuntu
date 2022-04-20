@@ -3,11 +3,15 @@
   connection: local
   vars_files:
     - ./vars/localhost.yml
+
   roles:
-    - nvim-build
+    - { role: nvim-build, become: true }
     - nvim-config
+    - { role: fubarhouse.golang, become: true }
+    # - { role: fubarhouse.rust, become: true }
     - apt
     - rust
     - cargo
     - tmux
-    - { role: fubarhouse.golang, become: true }
+    - lazydocker
+    - zsh

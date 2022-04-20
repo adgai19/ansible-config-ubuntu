@@ -36,11 +36,16 @@
   become: true
   when: clone.changed
 
-- name: get tmux config
-  get_url:
-    url: https://raw.githubusercontent.com/adgai19/system-config/master/.tmux.conf
-    dest: "{{ ansible_user_dir}}/.tmux.conf"
+# - name: get tmux config
+#   get_url:
+#     url: https://raw.githubusercontent.com/adgai19/system-config/master/.tmux.conf
+#     dest: "{{ ansible_user_dir}}/.tmux.conf"
 
+- name: copy tmux config
+  copy:
+    src: tmux
+    dest: "{{ansible_user_dir}}/.tmux.conf"
+    force: true
 - name: get tpm
   git:
     clone: yes

@@ -7,6 +7,8 @@
 
 - name: install pass
   package:
-    name: pass
+    name:
+      - pass
+      - xsel
     state: present
   become: true
