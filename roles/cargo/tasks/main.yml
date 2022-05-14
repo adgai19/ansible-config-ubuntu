@@ -1,5 +1,6 @@
 ---
 - name: install packages
+  tags: cargo
   community.general.cargo:
     name:
       - alacritty

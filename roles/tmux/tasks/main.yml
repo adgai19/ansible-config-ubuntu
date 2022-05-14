@@ -1,5 +1,7 @@
 ---
 - name: get libevent and ncurses
+  tags: tmux
+  become: true
   package:
     name:
       - libevent-dev
@@ -9,44 +11,46 @@
       - build-essential
 
 - name: clone tmux
+  tags: tmux
   git:
     clone: yes
-    dest: "~/github/tmux"
+    dest: "{{ ansible_user_dir}}/tmux"
     repo: https://github.com/tmux/tmux.git
     update: yes
     single_branch: yes
   register: clone
 
 - name: configure tmux
+  tags: tmux
   shell:
     cmd: "sh autogen.sh && ./configure"
-    chdir: "{{ ansible_user_dir}}/github/tmux"
+    chdir: "{{ ansible_user_dir}}/tmux"
   when: clone.changed
 
 - name: build tmux
+  tags: tmux
   make:
-    chdir: "{{ ansible_user_dir}}/github/tmux"
+    chdir: "{{ ansible_user_dir}}/tmux"
     jobs: 8
   when: clone.changed
 
 - name: install tmux
+  tags: tmux
   make:
     target: install
-    chdir: "{{ ansible_user_dir}}/github/tmux"
+    chdir: "{{ ansible_user_dir}}/tmux"
   become: true
   when: clone.changed
 
-# - name: get tmux config
-#   get_url:
-#     url: https://raw.githubusercontent.com/adgai19/system-config/master/.tmux.conf
-#     dest: "{{ ansible_user_dir}}/.tmux.conf"
-
 - name: copy tmux config
+  tags: tmux
   copy:
     src: tmux
     dest: "{{ansible_user_dir}}/.tmux.conf"
     force: true
+
 - name: get tpm
+  tags: tmux
   git:
     clone: yes
     repo: https://github.com/tmux-plugins/tpm
@@ -56,6 +60,7 @@
   when: clone.changed
 
 - name: install tmux plugins
+  tags: tmux
   shell:
     cmd: ~/.tmux/plugins/tpm/bin/install_plugins
   when: clone.changed

@@ -1,5 +1,6 @@
 ---
 - name: Dependancies
+  tags: nvim
   become: true
   apt:
     name:
@@ -18,17 +19,20 @@
     state: present
 
 - name: check if nvim build dir is present
+  tags: nvim
   stat:
     path: "{{ ansible_user_dir }}/github/neovim"
   register: build
 
 - name: get latest tags
+  tags: nvim
   command:
     chdir: "{{ ansible_user_dir }}/github/neovim"
     cmd: git fetch --tags -f
   when: build.stat.exists
 
 - name: Clone neovim
+  tags: nvim
   ansible.builtin.git:
     clone: yes
     depth: 1
@@ -41,6 +45,7 @@
   register: clone
 
 - name: Build Neovim
+  tags: nvim
   community.general.make:
     chdir: "{{ ansible_user_dir }}/github/neovim"
     jobs: 8
@@ -49,6 +54,7 @@
   when: clone.changed
 
 - name: Install Neovim
+  tags: nvim
   make:
     target: install
     chdir: "{{ ansible_user_dir }}/github/neovim"

@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- hosts: 192.168.0.180
+  # - hosts: localhost
   connection: local
   vars_files:
     - ./vars/localhost.yml
@@ -7,11 +8,12 @@
   roles:
     - { role: nvim-build, become: true }
     - nvim-config
-    - { role: fubarhouse.golang, become: true }
+    # - { role: fubarhouse.golang, become: true }
     # - { role: fubarhouse.rust, become: true }
     - apt
     - rust
-    - cargo
     - tmux
-    - lazydocker
     - zsh
+    - test
+    - cargo
+    - lazydocker

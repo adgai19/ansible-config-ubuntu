@@ -1,11 +1,13 @@
 ---
 - name: upgrade packages
+  tags: apt
   package:
     update_cache: yes
     upgrade: full
   become: true
 
 - name: install pass
+  tags: apt
   package:
     name:
       - pass

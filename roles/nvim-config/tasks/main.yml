@@ -1,10 +1,12 @@
 ---
 - name: check if config exists
+  tags: nvim
   stat:
     path: "{{ansible_user_dir}}/.config/nvim/init.lua"
   register: config
 
 - name: Clone Config
+  tags: nvim
   ansible.builtin.git:
     clone: yes
     dest: "{{ansible_user_dir}}/.config/nvim"
@@ -15,5 +17,14 @@
     single_branch: yes
   when: not config.stat.exists
 
-- name: sync packages
-  shell: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'
+- name: clone packer
+  tags: nvim
+  git:
+    clone: yes
+    dest: "{{ansible_user_dir}}/.local/share/nvim/site/pack/packer/start/packer.nvim"
+    repo: "https://github.com/wbthomason/packer.nvim"
+    single_branch: yes
+    depth: 1
+  when: not config.stat.exists
+# - name: sync packages
+#   shell: nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'

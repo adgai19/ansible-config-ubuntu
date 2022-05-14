@@ -1,21 +1,25 @@
 ---
 - name: get zsh
+  tags: zsh
   package:
     name: zsh
     state: latest
 
 - name: Set default
+  tags: zsh
   user:
     name: "{{ ansible_env['USER'] }}"
     shell: /usr/bin/zsh
   become: true
 
 - name: check for Existing install
+  tags: zsh
   stat:
     path: "{{ ansible_user_dir }}/.oh-my-zsh"
   register: install
 
 - name: Download oh-my-zsh
+  tags: zsh
   get_url:
     dest: /tmp/zsh-install.sh
     mode: 0755
@@ -24,14 +28,17 @@
 
 - name: Execute zsh-install.sh
   shell: /tmp/zsh-install.sh
+  tags: zsh
   when: not install.stat.exists
 
 - name: Remove zsh-install.sh
+  tags: zsh
   file:
     path: /tmp/zsh-install.sh
     state: absent
 
 - name: Clone zsh-autosuggestions
+  tags: zsh
   ansible.builtin.git:
     clone: yes
     depth: 1
@@ -42,6 +49,7 @@
     version: master
 
 - name: Clone zsh-completions
+  tags: zsh
   ansible.builtin.git:
     clone: yes
     depth: 1
@@ -52,6 +60,7 @@
     version: master
 
 - name: Clone zsh-syntax-highlighting
+  tags: zsh
   ansible.builtin.git:
     clone: yes
     depth: 1
@@ -62,6 +71,7 @@
     version: master
 
 - name: Clone zsh-z
+  tags: zsh
   ansible.builtin.git:
     clone: yes
     depth: 1
@@ -71,6 +81,7 @@
     update: yes
 
 - name: copy zshrc to home folder
+  tags: zsh
   copy:
     dest: "{{ansible_user_dir}}/.zshrc"
     src: zshrc

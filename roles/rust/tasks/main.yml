@@ -1,5 +1,6 @@
 ---
 - name: check if cargo is installed
+  tags: cargo
   shell: command -v cargo
   register: cargo_exists
   ignore_errors: true
@@ -13,12 +14,14 @@
     force: "yes"
   tags:
     - rust
+    - cargo
 
 - name: install rust/cargo
   when: cargo_exists is failed
   shell: /tmp/sh.rustup.rs -y
   tags:
     - rust
+    - cargo
 # - name: add cargo to path in fish
 #   when: cargo_exists is failed
 #   lineinfile:
