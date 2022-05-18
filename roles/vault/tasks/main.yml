@@ -1,0 +1,20 @@
+---
+- name: Add apt key
+  tags: vault
+  become: true
+  apt_key:
+    url: https://apt.releases.hashicorp.com/gpg
+    state: present
+
+- name: add repo
+  tags: vault
+  apt_repository:
+    repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ansible_facts['lsb']['codename']}} main
+
+- name: install vault
+  become: true
+  tags: vault
+  apt:
+    name: vault
+    state: latest
+    update_cache: true
