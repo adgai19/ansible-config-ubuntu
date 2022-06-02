@@ -101,11 +101,11 @@ bind -n M-7 select-window -t 7
 bind -n M-8 select-window -t 8
 bind -n M-9 select-window -t 9
 
-bind S choose-tree
+bind S choose-tree -swZ
 # simpler window to show only sessions
-bind s choose-session
+bind s choose-session -swZ
 # terminal session management
-bind -n C-s neww "tmux-sessionizer"
+bind -n C-s popup "tmux-sessionizer"
 # bind -n M-k run-shell "tmux kill-session -a"\;display-message "other sessions killed"
 
 set-window-option -g automatic-rename
@@ -120,6 +120,7 @@ set -s user-keys[0] "\e[1;5I"
 set -s user-keys[1] "\e[1;6I"
 bind-key -n User0 next-window
 bind-key -n User1 previous-window
+set -g @fpp-key 'k'
 
 #Plugin
 set -g @plugin 'GROG/tmux-plugin-mem'
@@ -127,7 +128,7 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
 set -g @plugin 'tmux-plugins/tmux-online-status'
-#set -g @plugin 'jbnicolai/tmux-fpp'
+set -g @plugin 'jbnicolai/tmux-fpp'
 #set -g @plugin 'tmux-plugins/tmux-pain-control'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-net-speed'
