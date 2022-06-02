@@ -46,6 +46,7 @@
 
 - name: Build Neovim
   tags: nvim
+  become: true
   community.general.make:
     chdir: "{{ ansible_user_dir }}/github/neovim"
     jobs: 8

@@ -9,9 +9,11 @@
     - apt
     - rust
     - nvim-build
+    - helm
     - nvim-config
     - tmux
     - zsh
     - vault
     - cargo
     - lazydocker
+    - kitty

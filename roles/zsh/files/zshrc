@@ -209,6 +209,7 @@ export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/bin/java::")
 #export WORKSPACE=$HOME/workspace
 #/* export NODE_OPTIONS=--openssl-legacy-provider */
 export FZF_DEFAULT_COMMAND='rg --files --follow --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*}"'
+export KUBECONFIG="${KUBECONFIG}:/home/adgai/.kube/k3s/config"
 
 export GOPATH=$HOME/go
 # export PATH=$PATH:$GOROOT/bin:$GOPATH/bin

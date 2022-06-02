@@ -1,0 +1,20 @@
+---
+- name: check if helm is installed
+  tags: helm
+  shell: command -v helm
+  register: helm_exists
+  ignore_errors: true
+
+- name: download helm
+  when: helm_exists is failed
+  get_url:
+    url: https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+    dest: /tmp/get_helm.sh
+    mode: "0755"
+    force: "yes"
+  tags: helm
+
+- name: install helm
+  when: helm_exists is failed
+  shell: /tmp/get_helm.sh
+  tags: helm

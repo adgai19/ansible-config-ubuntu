@@ -1,4 +1,4 @@
-# Set prefix to Ctrl-Space
+# prefix stuff
 unbind C-b
 set -g prefix C-t
 bind C-t send-prefix
@@ -7,51 +7,43 @@ bind -n C-g send-prefix
 setw -g aggressive-resize on
 set -g status-right-length 180
 set -s set-clipboard on
-# bind C-l send-keys 'C-l'
-# bind j select-pane -L
-# bind k select-pane -D
-# bind l select-pane -U
-# bind \; select-pane -R
+
 bind -n C-Left  previous-window
 bind -n C-Right next-window
-# bind C-l send-keys 'C-l'
 bind  e switch-client -l
+
 # tmux statusline config
 set -g status-interval 1
-#set-option -sa terminal-overrides ',alacritty:RGB'
+# terminal color config
 set-option -g default-terminal "screen-256color"
 set-option -gw xterm-keys on
+
  # copy 
 setw -g mode-keys vi
-bind-key -T copy-mode-vi y send -X copy-selection-and-cancel
-bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel
+bind -T copy-mode    C-c send -X copy-pipe-no-clear "xsel -i --clipboard"
+bind -T copy-mode-vi C-c send -X copy-pipe-no-clear "xsel -i --clipboard"
 
-set -g set-clipboard off
+# bind-key -n M-h run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-h) || tmux select-pane -L"
+# bind-key -n M-j run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-j) || tmux select-pane -D"
+# bind-key -n M-k run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-k) || tmux select-pane -U"
+# bind-key -n M-l run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-l) || tmux select-pane -R"
 
-set -g mode-style "fg=#7aa2f7,bg=#3b4261"
-bind-key -n M-h run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-h) || tmux select-pane -L"
-bind-key -n M-j run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-j) || tmux select-pane -D"
-bind-key -n M-k run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-k) || tmux select-pane -U"
-bind-key -n M-l run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys M-l) || tmux select-pane -R"
 set -g message-style "fg=#7aa2f7,bg=#3b4261"
+set -g mode-style "fg=#7aa2f7,bg=#3b4261"
 set -g message-command-style "fg=#7aa2f7,bg=#3b4261"
-
 set -g pane-border-style "fg=#3b4261"
 set -g pane-active-border-style "fg=#7aa2f7"
 set-option -g focus-events on 
 
 set -g status "on"
-set -g status-justify "left"
-
+set -g status-justify "center"
 set -g status-style "fg=#7aa2f7,bg=#1f2335"
 
 set -g status-left-length "100"
 
-TMUX_FZF_LAUNCH_KEY="C-f"
+# TMUX_FZF_LAUNCH_KEY="C-f"
 
 set -g @fzf-url-bind 'u'
-set -g status-left-style NONE
-set -g status-right-style NONE
 
 set -g default-terminal "${TERM}"
 set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'  # undercurl support
@@ -68,16 +60,12 @@ set -g window-status-separator ""
 set -g window-status-style "NONE,fg=#a9b1d6,bg=#1f2335"
 set -g window-status-format "#[fg=#1f2335,bg=#1f2335,nobold,nounderscore,noitalics]#[default] #I  #W #F #[fg=#1f2335,bg=#1f2335,nobold,nounderscore,noitalics]"
 set -g window-status-current-format "#[fg=#1f2335,bg=#3b4261,nobold,nounderscore,noitalics]#[fg=#7aa2f7,bg=#3b4261,bold] #I  #W #F #[fg=#3b4261,bg=#1f2335,nobold,nounderscore,noitalics]"
+
   
 # Mouse mode
 setw -g mouse on
 set-option -sg escape-time 10
 
-bind-key -T copy-mode-vi MouseDragEnd1Pane send -X copy-pipe-and-cancel "xsel -b"
-bind-key -n -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xsel -b"
-
-# bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "xclip -sel clip </dev/null & xclip -i -f -selection primary | xclip -i -selection clipboard"
-# bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -sel clip </dev/null & xclip -selection clipboard -i"
 # Set easier window split keys
 bind-key v split-window -h  -c "#{pane_current_path}"
 bind-key h split-window -v -c "#{pane_current_path}"
@@ -101,11 +89,12 @@ bind -n M-7 select-window -t 7
 bind -n M-8 select-window -t 8
 bind -n M-9 select-window -t 9
 
-bind S choose-tree
+bind S choose-tree -swZ
 # simpler window to show only sessions
-bind s choose-session
+bind s choose-session -swZ
 # terminal session management
-bind -n C-s neww "tmux-sessionizer"
+bind -n C-s display-popup -E "tmux-sessionizer"
+bind C-g popup -E -c "#{pane_current_path}" #"zsh"
 # bind -n M-k run-shell "tmux kill-session -a"\;display-message "other sessions killed"
 
 set-window-option -g automatic-rename
@@ -116,10 +105,7 @@ set -g @net_speed_format "D:%4s U:%4s"
 set-option -g default-shell /usr/bin/zsh
 set -g @continuum-restore 'on'
 
-set -s user-keys[0] "\e[1;5I"
-set -s user-keys[1] "\e[1;6I"
-bind-key -n User0 next-window
-bind-key -n User1 previous-window
+set -g @fpp-key 'k'
 
 #Plugin
 set -g @plugin 'GROG/tmux-plugin-mem'
@@ -127,8 +113,7 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'tmux-plugins/tmux-prefix-highlight'
 set -g @plugin 'tmux-plugins/tmux-online-status'
-#set -g @plugin 'jbnicolai/tmux-fpp'
-#set -g @plugin 'tmux-plugins/tmux-pain-control'
+set -g @plugin 'jbnicolai/tmux-fpp'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-net-speed'
 set -g @plugin 'tmux-plugins/tmux-continuum'
@@ -137,12 +122,10 @@ set -g @plugin 'tmux-plugins/tmux-open'
 set -g @plugin 'tmux-plugins/tmux-battery'
 set -g @plugin 'junegunn/tmux-fzf-url'
 set -g @plugin 'tmux-plugins/tmux-yank'
-# set -g @plugin 'christoomey/vim-tmux-navigator'
 set -g @plugin 'sainnhe/tmux-fzf'
 
 if "test ! -d ~/.tmux/plugins/tpm" \
 "run 'git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins'"
-#set -g @plugin "arcticicestudio/nord-tmux"
 # Easy config reload
 bind-key r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded."
 run -b '~/.tmux/plugins/tpm/tpm'
