@@ -1,5 +1,11 @@
 ---
+- name: check if vault is present
+  shell: command -v vault
+  register: vault_exists
+  ignore_errors: true
+
 - name: Add apt key
+  when: vault_exists is failed
   tags: vault
   become: true
   apt_key:
@@ -8,11 +14,13 @@
 
 - name: add repo
   tags: vault
+  when: vault_exists is failed
   apt_repository:
     repo: deb [arch=amd64] https://apt.releases.hashicorp.com {{ansible_facts['lsb']['codename']}} main
 
 - name: install vault
   become: true
+  when: vault_exists is failed
   tags: vault
   apt:
     name: vault
